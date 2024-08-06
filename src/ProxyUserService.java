@@ -1,6 +1,7 @@
-public class ProxyUserService implements UserService {
+import java.util.List;
 
-    private RealUserService realUserService;
+public class ProxyUserService implements UserService {
+    private RealUserService realUserService = new RealUserService();
     private boolean isAdmin;
 
     public ProxyUserService(boolean isAdmin) {
@@ -10,24 +11,24 @@ public class ProxyUserService implements UserService {
     @Override
     public void carregarUsuarios() {
         if (isAdmin) {
-            if (realUserService == null) {
-                realUserService = new RealUserService();
-            }
             realUserService.carregarUsuarios();
         } else {
-            System.out.println("Acesso negado. Você não tem permissão para carregar usuários.");
+            System.out.println("Permissão negada: Apenas administradores podem carregar usuários.");
         }
     }
 
     @Override
     public void exibirUsuarios() {
         if (isAdmin) {
-            if (realUserService == null) {
-                realUserService = new RealUserService();
-            }
             realUserService.exibirUsuarios();
         } else {
-            System.out.println("Acesso negado. Você não tem permissão para exibir usuários.");
+            System.out.println("Permissão negada: Apenas administradores podem exibir usuários.");
         }
     }
+
+    public List<String> getUsuarios() {
+        return realUserService.getUsuarios();
+    }
+
+
 }
